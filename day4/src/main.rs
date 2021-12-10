@@ -77,18 +77,19 @@ fn main() -> Result<()> {
 fn check(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
     for hm in hmv {
         let r = hm.into_iter().filter(|(_, v)| *v == true).count();
-        if r == 5 {
-            let mut sum = 0;
-            for hm in hmv {
-                let s: i32 = hm
-                    .into_iter()
-                    .filter(|(_, v)| *v == false)
-                    .map(|(v, _)| *v)
-                    .sum();
-                sum = sum + s;
-            }
-            return (true, sum * n);
+        if r != 5 {
+            continue;
         }
+        let mut sum = 0;
+        for hm in hmv {
+            let s: i32 = hm
+                .into_iter()
+                .filter(|(_, v)| *v == false)
+                .map(|(v, _)| *v)
+                .sum();
+            sum = sum + s;
+        }
+        return (true, sum * n);
     }
     (false, -1)
 }
@@ -96,7 +97,7 @@ fn check(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
 fn check_board(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
     let r = check(&hmv, n);
     if r.0 {
-        return r
+        return r;
     }
     // transpose
     let mut t: Vec<Vec<(i32, bool)>> = Vec::new();
