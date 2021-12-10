@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{self, BufRead};
 
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
 
 fn main() -> Result<()> {
     let mfst_dir = env!("CARGO_MANIFEST_DIR");

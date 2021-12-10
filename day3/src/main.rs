@@ -20,7 +20,7 @@ fn main() -> Result<()> {
     for i in 0..=11 {
         let tmp = filter_vec(oxygen_generator_rating_v.clone(), rate_v[i], i)?;
         if tmp.len() == 0 {
-            break
+            break;
         }
         oxygen_generator_rating_v = tmp.clone();
         rate_v = find_rate(oxygen_generator_rating_v.clone())?;
@@ -31,17 +31,26 @@ fn main() -> Result<()> {
     for i in 0..=11 {
         let tmp = filter_vec(co2_scrubber_rating_v.clone(), rate_v[i], i)?;
         if tmp.len() == 0 {
-            break
+            break;
         }
         co2_scrubber_rating_v = tmp;
         rate_v = find_rate(co2_scrubber_rating_v.clone())?;
         rate_v = rate_v.iter().map(|v| 1 - v).collect();
     }
-    let oxygen_generator_rating_s: String = oxygen_generator_rating_v.iter().map(|v| v.to_string()).collect();
+    let oxygen_generator_rating_s: String = oxygen_generator_rating_v
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
     let oxygen_generator_rating_i = isize::from_str_radix(&oxygen_generator_rating_s, 2).unwrap();
-    let co2_scrubber_rating_s: String = co2_scrubber_rating_v.iter().map(|v| v.to_string()).collect();
+    let co2_scrubber_rating_s: String = co2_scrubber_rating_v
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
     let co2_scrubber_rating_i = isize::from_str_radix(&co2_scrubber_rating_s, 2).unwrap();
-    println!("Part two: {}", oxygen_generator_rating_i * co2_scrubber_rating_i);
+    println!(
+        "Part two: {}",
+        oxygen_generator_rating_i * co2_scrubber_rating_i
+    );
 
     Ok(())
 }
