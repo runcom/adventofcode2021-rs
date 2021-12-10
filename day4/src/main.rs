@@ -9,14 +9,10 @@ fn main() -> Result<()> {
     for l in io::BufReader::new(fs::File::open(format!("{}/input", mfst_dir))?).lines() {
         lines.push(l?);
     }
-    let input_ns = lines.iter().take(1);
-    let mut ns: Vec<i32> = Vec::new();
-    for n in input_ns {
-        ns = n
-            .split(",")
-            .map(|v| v.to_string().parse::<i32>().unwrap())
-            .collect();
-    }
+    let ns: Vec<i32> = lines[0]
+        .split(",")
+        .map(|v| v.to_string().parse::<i32>().unwrap())
+        .collect();
     let input_boards = lines.iter().skip(2);
     let mut boards: Vec<(Vec<Vec<(i32, bool)>>, bool)> = Vec::new();
     let mut board: Vec<Vec<(i32, bool)>> = Vec::new();
