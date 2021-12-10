@@ -74,10 +74,10 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn check_board(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
+fn check(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
     for hm in hmv {
-        let r: Vec<&(i32, bool)> = hm.into_iter().filter(|(_, v)| *v == true).collect();
-        if r.len() == 5 {
+        let r = hm.into_iter().filter(|(_, v)| *v == true).count();
+        if r == 5 {
             let mut sum = 0;
             for hm in hmv {
                 let s: i32 = hm
@@ -90,6 +90,15 @@ fn check_board(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
             return (true, sum * n);
         }
     }
+    (false, -1)
+}
+
+fn check_board(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
+    let r = check(&hmv, n);
+    if r.0 {
+        return r
+    }
+    // transpose
     let mut t: Vec<Vec<(i32, bool)>> = Vec::new();
     for _ in 0..=4 {
         t.push(Vec::new());
@@ -100,22 +109,7 @@ fn check_board(hmv: &Vec<Vec<(i32, bool)>>, n: i32) -> (bool, i32) {
             t[j].push((*k, *v));
         }
     }
-    for hm in &t {
-        let r: Vec<&(i32, bool)> = hm.into_iter().filter(|(_, v)| *v == true).collect();
-        if r.len() == 5 {
-            let mut sum = 0;
-            for hm in &t {
-                let s: i32 = hm
-                    .into_iter()
-                    .filter(|(_, v)| *v == false)
-                    .map(|(v, _)| *v)
-                    .sum();
-                sum = sum + s;
-            }
-            return (true, sum * n);
-        }
-    }
-    (false, 0)
+    check(&t, n)
 }
 
 fn fill_board(hmv: &mut Vec<Vec<(i32, bool)>>, n: i32) {
