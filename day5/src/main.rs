@@ -83,5 +83,122 @@ fn main() -> Result<()> {
         }
     }
     println!("Part one: {}", overlapping_coordinates);
+    let diagonals: Vec<&((i32, i32), (i32, i32))> = entries
+        .iter()
+        .filter(|e| !(e.0 .1 == e.1 .1) && !(e.0 .0 == e.1 .0))
+        .collect();
+    for e in diagonals {
+        if e.0 .0 < e.1 .0 && e.0 .1 < e.1 .1 {
+            let mut c = (e.1 .0, e.1 .1);
+            if coordinates.contains_key(&c) {
+                let count = coordinates.entry(c).or_default();
+                if *count != 2 {
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                }
+            } else {
+                coordinates.insert(c, 1);
+            }
+            while c != (e.0 .0, e.0 .1) {
+                let x = c.0 - 1;
+                let y = c.1 - 1;
+                c = (x, y);
+                if coordinates.contains_key(&c) {
+                    let count = coordinates.entry(c).or_default();
+                    if *count == 2 {
+                        continue;
+                    }
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                } else {
+                    coordinates.insert(c, 1);
+                }
+            }
+        }
+        if e.0 .0 > e.1 .0 && e.0 .1 > e.1 .1 {
+            let mut c = (e.1 .0, e.1 .1);
+            if coordinates.contains_key(&c) {
+                let count = coordinates.entry(c).or_default();
+                if *count != 2 {
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                }
+            } else {
+                coordinates.insert(c, 1);
+            }
+            while c != (e.0 .0, e.0 .1) {
+                let x = c.0 + 1;
+                let y = c.1 + 1;
+                c = (x, y);
+                if coordinates.contains_key(&c) {
+                    let count = coordinates.entry(c).or_default();
+                    if *count == 2 {
+                        continue;
+                    }
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                } else {
+                    coordinates.insert(c, 1);
+                }
+            }
+        }
+        if e.0.0 > e.1.0 && e.0.1 < e.1.1 {
+            let mut c = (e.1 .0, e.1 .1);
+            if coordinates.contains_key(&c) {
+                let count = coordinates.entry(c).or_default();
+                if *count != 2 {
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                }
+            } else {
+                coordinates.insert(c, 1);
+            }
+
+            while c != (e.0 .0, e.0 .1) {
+                let x = c.0 + 1;
+                let y = c.1 - 1;
+                c = (x, y);
+                if coordinates.contains_key(&c) {
+                    let count = coordinates.entry(c).or_default();
+                    if *count == 2 {
+                        continue;
+                    }
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                } else {
+                    coordinates.insert(c, 1);
+                }
+            }
+        }
+        if e.0.0 < e.1.0 && e.0.1 > e.1.1 {
+            let mut c = (e.1 .0, e.1 .1);
+            if coordinates.contains_key(&c) {
+                let count = coordinates.entry(c).or_default();
+                if *count != 2 {
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                }
+            } else {
+                coordinates.insert(c, 1);
+            }
+
+            while c != (e.0 .0, e.0 .1) {
+                let x = c.0 - 1;
+                let y = c.1 + 1;
+                c = (x, y);
+                if coordinates.contains_key(&c) {
+                    let count = coordinates.entry(c).or_default();
+                    if *count == 2 {
+                        continue;
+                    }
+                    *count += 1;
+                    overlapping_coordinates += 1;
+                } else {
+                    coordinates.insert(c, 1);
+                }
+            }
+        }
+    }
+    println!("Part two: {}", overlapping_coordinates);
     Ok(())
 }
